@@ -89,6 +89,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           selectedProduct={selectedProduct}
           setProducts={setProducts}
           setIsEditing={setIsEditing}
+          getProducts={getProducts}
         />
       )}
     </div>

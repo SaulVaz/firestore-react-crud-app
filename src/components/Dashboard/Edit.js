@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Edit = ({ products, selectedProduct, setProducts, setIsEditing }) => {
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase"
+
+const Edit = ({ products, selectedProduct, setProducts, setIsEditing, getProducts }) => {
   const id = selectedProduct.id;
 
   const [Producto, setProducto] = useState(selectedProduct.Producto);
@@ -9,7 +12,7 @@ const Edit = ({ products, selectedProduct, setProducts, setIsEditing }) => {
   const [Precio, setPrecio] = useState(selectedProduct.Precio);
   const [Categoria, setCategoria] = useState(selectedProduct.Categoria);
 
-  const handleUpdate = e => {
+  const handleUpdate = async(e) => {
     e.preventDefault();
 
     if (!Producto || !Descripcion || !Precio || !Categoria) {
@@ -29,10 +32,13 @@ const Edit = ({ products, selectedProduct, setProducts, setIsEditing }) => {
       Categoria,
     };
 
-    // TODO: Update document
+    setDoc(doc(db, "productos", id), {
+      ...product
+    });
 
     setProducts(products);
     setIsEditing(false);
+    getProducts()
 
     Swal.fire({
       icon: 'success',
