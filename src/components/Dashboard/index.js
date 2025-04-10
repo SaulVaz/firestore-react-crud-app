@@ -6,7 +6,7 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase"
 
 const Dashboard = ({ setIsAuthenticated }) => {
@@ -44,7 +44,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
       if (result.value) {
         const [product] = products.filter(product => product.id === id);
 
-        // TODO delete document
+        deleteDoc(doc(db, "productos", id));
 
         Swal.fire({
           icon: 'success',
