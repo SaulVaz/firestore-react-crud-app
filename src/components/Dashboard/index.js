@@ -80,6 +80,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           products={products}
           setProducts={setProducts}
           setIsAdding={setIsAdding}
+          getProducts={getProducts}
         />
       )}
       {isEditing && (

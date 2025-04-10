@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Add = ({ products, setProducts, setIsAdding }) => {
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "../../firebase/firebase"
+
+const Add = ({ products, setProducts, setIsAdding, getProducts }) => {
   const [Producto, setProducto] = useState('');
   const [Descripcion, setDescripcion] = useState('');
   const [Precio, setPrecio] = useState('');
   const [Categoria, setCategoria] = useState('');
 
-  const handleAdd = e => {
+  const handleAdd = async(e) => {
     e.preventDefault();
 
     if (!Producto || !Descripcion || !Precio || !Categoria) {
@@ -29,9 +32,17 @@ const Add = ({ products, setProducts, setIsAdding }) => {
     products.push(newProduct);
 
     // TODO: Add doc to DB
-
+    try {
+      await addDoc(collection(db, "productos"), {
+        ...newProduct
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
     setProducts(products);
     setIsAdding(false);
+    getProducts()
 
     Swal.fire({
       icon: 'success',
@@ -46,7 +57,7 @@ const Add = ({ products, setProducts, setIsAdding }) => {
     <div className="small-container">
       <form onSubmit={handleAdd}>
         <h1>Add Product</h1>
-        <label htmlFor="Producto">Productoe</label>
+        <label htmlFor="Producto">Producto</label>
         <input
           id="Producto"
           type="text"
