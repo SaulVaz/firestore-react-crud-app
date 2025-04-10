@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Add = ({ employees, setEmployees, setIsAdding }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [salary, setSalary] = useState('');
-  const [date, setDate] = useState('');
+const Add = ({ products, setProducts, setIsAdding }) => {
+  const [Producto, setProducto] = useState('');
+  const [Descripcion, setDescripcion] = useState('');
+  const [Precio, setPrecio] = useState('');
+  const [Categoria, setCategoria] = useState('');
 
   const handleAdd = e => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !salary || !date) {
+    if (!Producto || !Descripcion || !Precio || !Categoria) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -20,25 +19,24 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
       });
     }
 
-    const newEmployee = {
-      firstName,
-      lastName,
-      email,
-      salary,
-      date,
+    const newProduct = {
+      Producto,
+      Descripcion,
+      Precio,
+      Categoria,
     };
 
-    employees.push(newEmployee);
+    products.push(newProduct);
 
     // TODO: Add doc to DB
 
-    setEmployees(employees);
+    setProducts(products);
     setIsAdding(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Added!',
-      text: `${firstName} ${lastName}'s data has been Added.`,
+      text: `${Producto} data has been added.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -47,46 +45,38 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
   return (
     <div className="small-container">
       <form onSubmit={handleAdd}>
-        <h1>Add Employee</h1>
-        <label htmlFor="firstName">First Name</label>
+        <h1>Add Product</h1>
+        <label htmlFor="Producto">Productoe</label>
         <input
-          id="firstName"
+          id="Producto"
           type="text"
-          name="firstName"
-          value={firstName}
-          onChange={e => setFirstName(e.target.value)}
+          name="Producto"
+          value={Producto}
+          onChange={e => setProducto(e.target.value)}
         />
-        <label htmlFor="lastName">Last Name</label>
+        <label htmlFor="Descripcion">Descripcion</label>
         <input
-          id="lastName"
+          id="Descripcion"
           type="text"
-          name="lastName"
-          value={lastName}
-          onChange={e => setLastName(e.target.value)}
+          name="Descripcion"
+          value={Descripcion}
+          onChange={e => setDescripcion(e.target.value)}
         />
-        <label htmlFor="email">Email</label>
+        <label htmlFor="Precio">Precio ($)</label>
         <input
-          id="email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor="salary">Salary ($)</label>
-        <input
-          id="salary"
+          id="Precio"
           type="number"
-          name="salary"
-          value={salary}
-          onChange={e => setSalary(e.target.value)}
+          name="Precio"
+          value={Precio}
+          onChange={e => setPrecio(e.target.value)}
         />
-        <label htmlFor="date">Date</label>
+        <label htmlFor="Categoria">Categoria</label>
         <input
-          id="date"
-          type="date"
-          name="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
+          id="Categoria"
+          type="text"
+          name="Categoria"
+          value={Categoria}
+          onChange={e => setCategoria(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Add" />

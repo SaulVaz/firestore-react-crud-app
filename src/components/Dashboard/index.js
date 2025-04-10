@@ -6,22 +6,29 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 
-import { employeesData } from '../../data';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebase"
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [employees, setEmployees] = useState(employeesData);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [products, setProducts] = useState();
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const getProducts = async () => {
+    const querySnapshot = await getDocs(collection(db, "productos"));
+    const products = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    setProducts(products)
+  }
+
   useEffect(() => {
-    // TODO: create getEmployees function and call it here
+    getProducts();
   }, []);
 
   const handleEdit = id => {
-    const [employee] = employees.filter(employee => employee.id === id);
+    const [product] = products.filter(product => product.id === id);
 
-    setSelectedEmployee(employee);
+    setSelectedProduct(product);
     setIsEditing(true);
   };
 
@@ -35,20 +42,20 @@ const Dashboard = ({ setIsAuthenticated }) => {
       cancelButtonText: 'No, cancel!',
     }).then(result => {
       if (result.value) {
-        const [employee] = employees.filter(employee => employee.id === id);
+        const [product] = products.filter(product => product.id === id);
 
         // TODO delete document
 
         Swal.fire({
           icon: 'success',
           title: 'Deleted!',
-          text: `${employee.firstName} ${employee.lastName}'s data has been deleted.`,
+          text: `${product.firstName} ${product.lastName}'s data has been deleted.`,
           showConfirmButton: false,
           timer: 1500,
         });
 
-        const employeesCopy = employees.filter(employee => employee.id !== id);
-        setEmployees(employeesCopy);
+        const productsCopy = products.filter(product => product.id !== id);
+        setProducts(productsCopy);
       }
     });
   };
@@ -62,7 +69,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
             setIsAuthenticated={setIsAuthenticated}
           />
           <Table
-            employees={employees}
+            products={products}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />
@@ -70,16 +77,16 @@ const Dashboard = ({ setIsAuthenticated }) => {
       )}
       {isAdding && (
         <Add
-          employees={employees}
-          setEmployees={setEmployees}
+          products={products}
+          setProducts={setProducts}
           setIsAdding={setIsAdding}
         />
       )}
       {isEditing && (
         <Edit
-          employees={employees}
-          selectedEmployee={selectedEmployee}
-          setEmployees={setEmployees}
+          products={products}
+          selectedProduct={selectedProduct}
+          setProducts={setProducts}
           setIsEditing={setIsEditing}
         />
       )}

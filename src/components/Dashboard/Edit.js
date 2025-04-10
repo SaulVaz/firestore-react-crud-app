@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Edit = ({ employees, selectedEmployee, setEmployees, setIsEditing }) => {
-  const id = selectedEmployee.id;
+const Edit = ({ products, selectedProduct, setProducts, setIsEditing }) => {
+  const id = selectedProduct.id;
 
-  const [firstName, setFirstName] = useState(selectedEmployee.firstName);
-  const [lastName, setLastName] = useState(selectedEmployee.lastName);
-  const [email, setEmail] = useState(selectedEmployee.email);
-  const [salary, setSalary] = useState(selectedEmployee.salary);
-  const [date, setDate] = useState(selectedEmployee.date);
+  const [Producto, setProducto] = useState(selectedProduct.Producto);
+  const [Descripcion, setDescripcion] = useState(selectedProduct.Descripcion);
+  const [Precio, setPrecio] = useState(selectedProduct.Precio);
+  const [Categoria, setCategoria] = useState(selectedProduct.Categoria);
 
   const handleUpdate = e => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !salary || !date) {
+    if (!Producto || !Descripcion || !Precio || !Categoria) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -22,24 +21,23 @@ const Edit = ({ employees, selectedEmployee, setEmployees, setIsEditing }) => {
       });
     }
 
-    const employee = {
+    const product = {
       id,
-      firstName,
-      lastName,
-      email,
-      salary,
-      date,
+      Producto,
+      Descripcion,
+      Precio,
+      Categoria,
     };
 
     // TODO: Update document
 
-    setEmployees(employees);
+    setProducts(products);
     setIsEditing(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${employee.firstName} ${employee.lastName}'s data has been updated.`,
+      text: `${product.Producto} ${product.Producto}'s data has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -48,46 +46,38 @@ const Edit = ({ employees, selectedEmployee, setEmployees, setIsEditing }) => {
   return (
     <div className="small-container">
       <form onSubmit={handleUpdate}>
-        <h1>Edit Employee</h1>
-        <label htmlFor="firstName">First Name</label>
+        <h1>Edit Product</h1>
+        <label htmlFor="Producto">Producto</label>
         <input
-          id="firstName"
+          id="Producto"
           type="text"
-          name="firstName"
-          value={firstName}
-          onChange={e => setFirstName(e.target.value)}
+          name="Producto"
+          value={Producto}
+          onChange={e => setProducto(e.target.value)}
         />
-        <label htmlFor="lastName">Last Name</label>
+        <label htmlFor="Descripcion">Descripcion</label>
         <input
-          id="lastName"
+          id="Descripcion"
           type="text"
-          name="lastName"
-          value={lastName}
-          onChange={e => setLastName(e.target.value)}
+          name="Descripcion"
+          value={Descripcion}
+          onChange={e => setDescripcion(e.target.value)}
         />
-        <label htmlFor="email">Email</label>
+        <label htmlFor="Precio">Precio ($)</label>
         <input
-          id="email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor="salary">Salary ($)</label>
-        <input
-          id="salary"
+          id="Precio"
           type="number"
-          name="salary"
-          value={salary}
-          onChange={e => setSalary(e.target.value)}
+          name="Precio"
+          value={Precio}
+          onChange={e => setPrecio(e.target.value)}
         />
-        <label htmlFor="date">Date</label>
+        <label htmlFor="Categoria">Categoria</label>
         <input
-          id="date"
-          type="date"
-          name="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
+          id="Categoria"
+          type="text"
+          name="Categoria"
+          value={Categoria}
+          onChange={e => setCategoria(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Update" />
